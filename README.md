@@ -1,28 +1,41 @@
-# [Click me for the demo](https://agentic-cloudflare-static-site-template.deltadelta.workers.dev/)
+# Whiteboard
 
-# What is this?
+A minimalist whiteboard for mouse and pen tablets.
 
-This repo is a template that you can give to an AI agent so that you can quickly deploy static websites using a NextJS and Cloudflare Worker stack.
+- The whole window is the canvas. No panning, no zooming.
+- Multiple canvases. Switch between them from the thumbnail bar at the top, or with the scroll wheel.
+- Five colours and a pen-size slider in the bottom toolbar.
+- Undo only. No eraser, no clearing, no deleting canvases.
+- Pen pressure controls stroke width. Mouse strokes have a constant width.
+- Session only. Nothing is saved: a reload starts with a blank canvas.
 
-Your agent should be able to clone this repo, or use it to instantiate a new Github project for you, then guide you on how to get it deployed using Cloudflare.
+## Default controls
 
-# Rationale
+| Action | Mouse | Keyboard | Pen |
+| --- | --- | --- | --- |
+| Draw | Left click | | Tip |
+| Undo | Right click | Ctrl+Z / Cmd+Z | |
+| Next canvas | Scroll down, forward button | → / Page Down | |
+| Previous canvas | Scroll up, back button | ← / Page Up | |
+| New canvas | | N | |
+| Colours | | 1–5 | |
+| Bigger / smaller pen | | ] / [ | |
+| Help and bindings | | ? | |
 
-This project is a spin-off from an internal project I built at the last company I was working at. We needed a super simple and cheap way for non-engineering staff to be able to experiment and deploy vibe-coded applications safely, and with minimal overhead to the engineering team.
+Open the help panel (the `?` button or key) to bind any key, mouse button or pen button to any action. Pen buttons have no default bindings. Tablet express keys usually send keyboard shortcuts, so map them to keys in your tablet driver. Bindings reset when the page reloads.
 
-As a devops engineer, all I need to do is:
-1. Give this template to the vibe-coder
-2. Create a Cloudflare application for this repo and hook it up to a domain/Cloudflare Access
+## Development
 
-# Limitations
+```sh
+npm install
+npm run dev       # local dev server
+npm run build     # static export to out/
+npm run preview   # build, then serve out/ with wrangler dev
+npm run lint
+```
 
-This repo is meant to be an exceptionally lean implementation of this type of workflow, so the only sites you can deploy here must be static. For example, with the NextJS directive `output: "export"`.
+Built with Next.js (App Router, static export) and TypeScript.
 
-# How to use
+## Deployment
 
-> You can send this repo to your agent. If necessary, just point it to the AGENTS.md file.
-
-1. Set up the connection between Github and Cloudflare. This can be done by going to the Cloudflare Web console > Workers > Create application > Github. Then follow the prompts.
-2. Create a new Github repo by using this as a template.
-3. Go to the Cloudflare Web console > Workers > Create application > Github, and then pick your new repo.
-4. Follow the prompts, then enable the workers domain and your application will be live at `.workers.dev`!
+The site is a static export served by a Cloudflare Worker (`wrangler.jsonc`, Worker name `whiteboard-deltadelta-dev`). Cloudflare builds and deploys it on every push to `main`.
