@@ -1,0 +1,20 @@
+# NextJS + Cloudflare Workers template
+
+> A minimal template for building static NextJS sites (App Router, TypeScript, `output: "export"`) that are deployed automatically by Cloudflare Workers on every push to `main`.
+
+This site is built from a template meant to be used by AI agents. It has no server, database, or secrets: the build produces plain HTML, CSS, and JavaScript that a Cloudflare Worker serves as static assets. Apps that need server code, a database, or third-party services are not supported by this template.
+
+## Docs
+
+- [AGENTS.md](https://raw.githubusercontent.com/delta1513/agentic-cloudflare-static-site-template/main/AGENTS.md): Instructions for agents - stack, commands, what the static export can and cannot do, pre-push checks, and Cloudflare setup
+- [Home page](/): Overview of the template, its rationale, limitations, and setup steps
+
+## Source
+
+- [GitHub repository](https://github.com/delta1513/agentic-cloudflare-static-site-template): Source code for the template
+- [wrangler.jsonc](https://raw.githubusercontent.com/delta1513/agentic-cloudflare-static-site-template/main/wrangler.jsonc): Cloudflare Worker config (name, build command, asset directory)
+- [next.config.ts](https://raw.githubusercontent.com/delta1513/agentic-cloudflare-static-site-template/main/next.config.ts): Next.js config that enables the static export
+
+## Optional
+
+- [Cloudflare Workers static assets docs](https://developers.cloudflare.com/workers/static-assets/index.md): Background on how the site is served
