@@ -1,0 +1,102 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  height: var(--wb-notch-h);
+  max-width: min(80vw, 720px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px 0 5px;
+  background: var(--wb-panel);
+  border: 1px solid var(--wb-border);
+  border-top: none;
+  border-radius: 0 0 var(--wb-radius) var(--wb-radius);
+  box-shadow: var(--wb-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--wb-text);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* Padding leaves room for the active ring inside the scroll clip. */
+.thumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 4px 3px;
+  scroll-padding-inline: 3px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb {
+  flex: none;
+  display: block;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 120ms;
+}
+
+.thumb:hover,
+.thumb[aria-current] {
+  opacity: 1;
+}
+
+.thumb canvas {
+  display: block;
+  box-sizing: content-box;
+  border: 1px solid var(--wb-border);
+  border-radius: 4px;
+  background: #fff;
+  transition: box-shadow 120ms;
+}
+
+.thumb[aria-current] canvas {
+  box-shadow: 0 0 0 2px var(--wb-accent);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
+
+.add {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--wb-muted);
+  cursor: pointer;
+  transition: background-color 120ms, color 120ms;
+}
+
+.add:hover {
+  background: var(--wb-hover);
+  color: var(--wb-text);
+}
+
+.add:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
