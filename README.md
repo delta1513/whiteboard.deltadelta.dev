@@ -7,7 +7,7 @@ A minimalist whiteboard for mouse and pen tablets.
 - Five colours and a pen-size slider in the bottom toolbar.
 - Undo only. No eraser, no clearing, no deleting canvases.
 - Pen pressure controls stroke width. Mouse strokes have a constant width.
-- Session only. Nothing is saved: a reload starts with a blank canvas.
+- Drawings are session only: a reload starts with a blank canvas. Custom bindings are saved in the browser (localStorage).
 
 ## Default controls
 
@@ -22,7 +22,7 @@ A minimalist whiteboard for mouse and pen tablets.
 | Bigger / smaller pen | | ] / [ | |
 | Help and bindings | | ? | |
 
-Open the help panel (the `?` button or key) to bind any key, mouse button or pen button to any action. Pen buttons have no default bindings. Tablet express keys usually send keyboard shortcuts, so map them to keys in your tablet driver. Bindings reset when the page reloads.
+Open the help panel (the `?` button or key) to bind any key, mouse button or pen button to any action. Pen buttons have no default bindings. Tablet express keys usually send keyboard shortcuts, so map them to keys in your tablet driver. Bindings are saved in this browser.
 
 ## Development
 

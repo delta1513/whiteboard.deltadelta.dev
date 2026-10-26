@@ -1,8 +1,9 @@
 import { useSyncExternalStore } from "react";
-import { cloneBindings, DEFAULT_BINDINGS } from "./bindings";
+import { cloneBindings, DEFAULT_BINDINGS, loadBindings, saveBindings } from "./bindings";
 import type { Action, Bindings, Board, State, Stroke } from "./types";
 
-// Session-only state: nothing is persisted, a reload starts fresh.
+// Canvases are session-only. Only bindings persist (localStorage), loaded after
+// mount via `actions.loadSavedBindings()` so the static HTML matches hydration.
 
 export const COLORS = [
   { name: "Black", value: "#1c1c1e" },
@@ -94,7 +95,12 @@ export const actions = {
     set({ helpOpen });
   },
   setBindings(bindings: Bindings) {
+    saveBindings(bindings);
     set({ bindings });
+  },
+  loadSavedBindings() {
+    const bindings = loadBindings();
+    if (bindings) set({ bindings });
   },
 };
 

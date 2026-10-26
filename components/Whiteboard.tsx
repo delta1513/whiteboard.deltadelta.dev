@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { findAction, triggerFromKey } from "@/lib/bindings";
-import { getState, runAction } from "@/lib/store";
+import { actions, getState, runAction } from "@/lib/store";
 import type { Action } from "@/lib/types";
 import CanvasBar from "./CanvasBar";
 import DrawingSurface from "./DrawingSurface";
@@ -22,6 +22,8 @@ function isEditable(target: EventTarget | null) {
 }
 
 export default function Whiteboard() {
+  useEffect(() => actions.loadSavedBindings(), []);
+
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (isEditable(e.target)) return;

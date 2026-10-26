@@ -42,6 +42,43 @@ export function cloneBindings(b: Bindings): Bindings {
   ) as Bindings;
 }
 
+const STORAGE_KEY = "whiteboard.bindings.v1";
+
+function isTrigger(t: unknown): t is Trigger {
+  if (!t || typeof t !== "object") return false;
+  const { type, code, button } = t as Record<string, unknown>;
+  if (type === "key") return typeof code === "string" && code !== "";
+  return (type === "mouse" || type === "pen") && Number.isInteger(button);
+}
+
+/**
+ * Saved bindings, or null if none or unreadable. Actions missing from storage
+ * (e.g. added in a later version) keep their defaults.
+ */
+export function loadBindings(): Bindings | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const saved = JSON.parse(raw) as Record<string, unknown>;
+    const out = cloneBindings(DEFAULT_BINDINGS);
+    for (const { action } of ACTIONS) {
+      const ts = saved?.[action];
+      if (Array.isArray(ts)) out[action] = ts.filter(isTrigger);
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+export function saveBindings(b: Bindings) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(b));
+  } catch {
+    // Storage blocked or full: bindings still work for this session.
+  }
+}
+
 const MODIFIER_CODES = new Set([
   "ShiftLeft", "ShiftRight", "ControlLeft", "ControlRight",
   "AltLeft", "AltRight", "MetaLeft", "MetaRight",

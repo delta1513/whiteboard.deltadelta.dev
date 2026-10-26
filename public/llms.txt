@@ -1,8 +1,8 @@
 # Whiteboard
 
-> A minimalist browser whiteboard for mouse and pen tablets: one full-window canvas per board, multiple boards, five colours, a pen-size slider, and undo. Nothing is saved; a reload starts fresh.
+> A minimalist browser whiteboard for mouse and pen tablets: one full-window canvas per board, multiple boards, five colours, a pen-size slider, and undo. Drawings are not saved; a reload starts fresh.
 
-The site is a single page with no accounts, no server and no storage. There is no panning or zooming and no eraser. Left click or the pen tip draws, right click or Ctrl+Z undoes, and the scroll wheel switches canvases. Pen pressure sets stroke width. The help panel lists the shortcuts and lets the user bind any key, mouse button or pen button to any action for the current session.
+The site is a single page with no accounts, no server, and no stored drawings (only custom key bindings are kept in the browser). There is no panning or zooming and no eraser. Left click or the pen tip draws, right click or Ctrl+Z undoes, and the scroll wheel switches canvases. Pen pressure sets stroke width. The help panel lists the shortcuts and lets the user bind any key, mouse button or pen button to any action; those bindings are saved in the browser.
 
 ## Docs
 

@@ -202,7 +202,7 @@ function Panel() {
           <button className={styles.textButton} onClick={() => actions.setBindings(cloneBindings(DEFAULT_BINDINGS))}>
             Reset to defaults
           </button>
-          <span className={styles.hint}>Bindings reset when the page reloads.</span>
+          <span className={styles.hint}>Bindings are saved in this browser.</span>
         </footer>
       </div>
     </div>
