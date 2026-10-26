@@ -1,39 +1,45 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
+  --wb-bg: #fbfbfa;
+  --wb-grid: rgba(0, 0, 0, 0.045);
+  --wb-panel: rgba(255, 255, 255, 0.92);
+  --wb-border: rgba(0, 0, 0, 0.08);
+  --wb-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --wb-text: #1c1c1e;
+  --wb-muted: #8e8e93;
+  --wb-hover: rgba(0, 0, 0, 0.05);
+  --wb-accent: #1c1c1e;
+  --wb-radius: 12px;
+  --wb-notch-h: 44px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-}
-
-main {
-  max-width: 44rem;
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem;
-}
-
-h2 {
-  margin-top: 2.5rem;
-}
-
-blockquote {
-  margin: 1rem 0;
-  padding: 0.25rem 1rem;
-  border-left: 4px solid currentColor;
-  opacity: 0.8;
-}
-
-code {
-  font-family: ui-monospace, monospace;
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  background: color-mix(in srgb, currentColor 12%, transparent);
-}
-
-footer {
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: var(--wb-text);
+  background-color: var(--wb-bg);
+  /* The grid is pure CSS so the canvases only ever hold ink. */
+  background-image:
+    linear-gradient(var(--wb-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--wb-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

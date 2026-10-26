@@ -60,7 +60,7 @@ export function triggerFromKey(e: KeyboardEvent): Trigger | null {
 
 /** Pen eraser tips report button 5 on most hardware; some only set buttons & 32. */
 export function triggerFromPointer(e: PointerEvent): Trigger {
-  const button = e.button === -1 && e.buttons & 32 ? 5 : e.button;
+  const button = e.pointerType === "pen" && e.buttons & 32 ? 5 : e.button;
   return e.pointerType === "pen" ? { type: "pen", button } : { type: "mouse", button };
 }
 
