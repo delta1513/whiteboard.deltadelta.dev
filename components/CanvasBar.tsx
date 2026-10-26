@@ -8,6 +8,7 @@ import type { Stroke } from "@/lib/types";
 import styles from "./CanvasBar.module.css";
 
 const THUMB_H = 30;
+const THUMB_MIN_LINE = 1; // thumbnail CSS px
 
 // Viewport size as an external store, so thumbnails keep the window's aspect ratio.
 type Viewport = { w: number; h: number };
@@ -59,7 +60,9 @@ const Thumb = memo(function Thumb({ index, strokes, active, width, scale }: Thum
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, w, h);
       ctx.setTransform(dpr * scale, 0, 0, dpr * scale, 0, 0);
-      renderStrokes(ctx, strokes);
+      // At thumbnail scale normal pens are a fraction of a pixel; keep every stroke visible.
+      const minSize = THUMB_MIN_LINE / scale;
+      renderStrokes(ctx, strokes.map((s) => (s.size >= minSize ? s : { ...s, size: minSize })));
     });
     return () => cancelAnimationFrame(id);
   }, [strokes, width, scale]);

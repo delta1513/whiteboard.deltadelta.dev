@@ -13,8 +13,8 @@ import Toolbar from "./Toolbar";
 const REPEATABLE = new Set<Action>(["undo", "sizeUp", "sizeDown"]);
 
 const WHEEL_STEP = 50; // px of scroll per canvas switch
-const WHEEL_COOLDOWN = 220; // ms to ignore after a switch (swallows trackpad inertia)
-const WHEEL_IDLE = 200; // ms without wheel events before the accumulator resets
+const WHEEL_COOLDOWN = 220; // ms before another wheel notch can switch again
+const WHEEL_IDLE = 200; // ms without wheel events that ends a gesture
 
 function isEditable(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
@@ -36,8 +36,13 @@ export default function Whiteboard() {
     };
 
     let accum = 0;
-    let lastWheel = 0;
+    let lastWheel = -Infinity;
+    let lastMag = 0;
     let cooldownUntil = 0;
+    // After a switch the rest of the gesture is ignored, so trackpad momentum (a long
+    // stream of shrinking deltas) moves one canvas only. The gesture ends after a pause,
+    // or when a full wheel notch arrives after the cooldown.
+    let locked = false;
     const onWheel = (e: WheelEvent) => {
       if (getState().helpOpen) {
         // Let the modal scroll, but never zoom the page.
@@ -46,14 +51,24 @@ export default function Whiteboard() {
       }
       e.preventDefault();
       const now = e.timeStamp;
-      if (now < cooldownUntil) return;
-      if (now - lastWheel > WHEEL_IDLE) accum = 0;
-      lastWheel = now;
       const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
-      accum += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit;
+      const delta = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit;
+      const mag = Math.abs(delta);
+      const prevMag = lastMag;
+      lastMag = mag;
+      if (now - lastWheel > WHEEL_IDLE) {
+        accum = 0;
+        locked = false;
+      } else if (locked && now >= cooldownUntil && mag >= WHEEL_STEP && mag >= prevMag) {
+        locked = false;
+      }
+      lastWheel = now;
+      if (locked) return;
+      accum += delta;
       if (Math.abs(accum) < WHEEL_STEP) return;
       runAction(accum > 0 ? "nextBoard" : "prevBoard");
       accum = 0;
+      locked = true;
       cooldownUntil = now + WHEEL_COOLDOWN;
     };
 

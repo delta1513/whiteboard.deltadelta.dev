@@ -52,16 +52,20 @@ export function useStore<T>(selector: (s: State) => T): T {
 
 const clampSize = (n: number) => Math.min(MAX_SIZE, Math.max(MIN_SIZE, Math.round(n)));
 
-function updateActive(fn: (strokes: Stroke[]) => Stroke[]) {
+function updateBoard(index: number, fn: (strokes: Stroke[]) => Stroke[]) {
   const boards = state.boards.slice();
-  const b = boards[state.active];
-  boards[state.active] = { ...b, strokes: fn(b.strokes) };
+  const b = boards[index];
+  boards[index] = { ...b, strokes: fn(b.strokes) };
   set({ boards });
 }
 
+const updateActive = (fn: (strokes: Stroke[]) => Stroke[]) => updateBoard(state.active, fn);
+
 export const actions = {
-  addStroke(stroke: Stroke) {
-    updateActive((s) => [...s, stroke]);
+  /** `boardId` is the board the stroke began on, in case the user switched mid-stroke. */
+  addStroke(stroke: Stroke, boardId = state.boards[state.active].id) {
+    const i = state.boards.findIndex((b) => b.id === boardId);
+    if (i !== -1) updateBoard(i, (s) => [...s, stroke]);
   },
   undo() {
     if (state.boards[state.active].strokes.length === 0) return;

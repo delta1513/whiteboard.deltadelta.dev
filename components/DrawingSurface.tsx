@@ -55,7 +55,7 @@ export default function DrawingSurface() {
     const committed = committedRef.current!;
     const live = liveRef.current!;
     const ring = ringRef.current!;
-    let current: { id: number; type: string; stroke: Stroke } | null = null;
+    let current: { id: number; type: string; board: string; stroke: Stroke } | null = null;
     let frame = 0;
     let lastPen = -Infinity;
     let dprQuery: MediaQueryList | undefined;
@@ -121,8 +121,9 @@ export default function DrawingSurface() {
       e.preventDefault();
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
       live.setPointerCapture(e.pointerId);
-      const { color, size } = getState();
-      current = { id: e.pointerId, type: e.pointerType, stroke: { color, size, points: [], pressure: pen } };
+      const { color, size, boards, active } = getState();
+      const stroke: Stroke = { color, size, points: [], pressure: pen };
+      current = { id: e.pointerId, type: e.pointerType, board: boards[active].id, stroke };
       addPoint(current.stroke, e);
       scheduleLive();
       moveRing(e);
@@ -140,13 +141,13 @@ export default function DrawingSurface() {
 
     const onEnd = (e: PointerEvent) => {
       if (!current || e.pointerId !== current.id) return;
-      const { stroke } = current;
+      const { stroke, board } = current;
       current = null;
       cancelAnimationFrame(frame);
       frame = 0;
       // The committed canvas paints the stroke from the store update before the next frame.
       clear(live);
-      actions.addStroke(stroke);
+      actions.addStroke(stroke, board);
     };
 
     const listeners: [string, (e: PointerEvent) => void][] = [
